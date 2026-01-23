@@ -246,7 +246,7 @@ export default function Cars() {
                 </thead>
                 <tbody>
                   {cars.map((car) => (
-                    <tr key={car._id}>
+                    <tr key={car.id}>
                       <td className="font-bold">{car.PlateNumber}</td>
                       <td>{car.type}</td>
                       <td>{car.Model}</td>

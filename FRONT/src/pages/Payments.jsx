@@ -56,7 +56,7 @@ export default function Payments() {
 
   const handleRecordChange = (e) => {
     const recordId = e.target.value;
-    const record = records.find(r => r._id === recordId);
+    const record = records.find(r => r.id === recordId);
     if (record) {
       setFormData(prev => ({
         ...prev,
@@ -111,12 +111,12 @@ export default function Payments() {
   };
 
   const getCarName = (carId) => {
-    const car = cars.find(c => c._id === carId);
+    const car = cars.find(c => c.id === carId);
     return car ? car.PlateNumber : 'Unknown';
   };
 
   const getRecordDetails = (recordId) => {
-    const record = records.find(r => r._id === recordId);
+    const record = records.find(r => r.id === recordId);
     return record ? record.RecordNumber : 'Unknown';
   };
 
@@ -195,7 +195,7 @@ export default function Payments() {
                     >
                       <option value="">Choose car...</option>
                       {cars.map(car => (
-                        <option key={car._id} value={car._id}>
+                        <option key={car.id} value={car.id}>
                           {car.PlateNumber} - {car.Type} {car.Model}
                         </option>
                       ))}
@@ -212,7 +212,7 @@ export default function Payments() {
                     >
                       <option value="">Select record...</option>
                       {records.map(record => (
-                        <option key={record._id} value={record._id}>
+                        <option key={record.id} value={record.id}>
                           {record.RecordNumber} - {getCarName(record.CarId)}
                         </option>
                       ))}
@@ -333,7 +333,7 @@ export default function Payments() {
                 </thead>
                 <tbody>
                   {payments.map((payment, index) => (
-                    <tr key={payment._id} className={`border-b hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                    <tr key={payment.id} className={`border-b hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                       <td className="px-4 py-3 text-sm font-medium text-gray-800">{payment.PaymentNumber}</td>
                       <td className="px-4 py-3 text-sm text-gray-600">{getRecordDetails(payment.ServiceRecordId)}</td>
                       <td className="px-4 py-3 text-sm text-gray-600">{getCarName(payment.CarId)}</td>

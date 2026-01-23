@@ -12,7 +12,7 @@
     "mysql2",
     "rest-api"
   ],
-  "author": "Mucyo miguel",
+  "author": "ntwari k. brian",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

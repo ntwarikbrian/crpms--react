@@ -730,8 +730,8 @@ export default function Reports() {
                     key={report.id}
                     onClick={() => generateReport(report.id)}
                     className={`group relative p-4 rounded-2xl border transition-all duration-300 ${reportType === report.id
-                        ? `border-${report.color}-500 bg-${report.color}-50 text-${report.color}-700 ring-4 ring-${report.color}-500/10`
-                        : 'border-slate-100 bg-slate-50/50 text-slate-600 hover:border-slate-300 hover:bg-white'
+                      ? `border-${report.color}-500 bg-${report.color}-50 text-${report.color}-700 ring-4 ring-${report.color}-500/10`
+                      : 'border-slate-100 bg-slate-50/50 text-slate-600 hover:border-slate-300 hover:bg-white'
                       }`}
                   >
                     <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">{report.icon}</div>
@@ -759,7 +759,7 @@ export default function Reports() {
                   >
                     <option value="">Global Fleet (All Units)</option>
                     {cars.map(car => (
-                      <option key={car._id} value={car._id}>
+                      <option key={car.id} value={car.id}>
                         {car.PlateNumber} • {car.Model}
                       </option>
                     ))}
@@ -823,7 +823,7 @@ export default function Reports() {
                     </thead>
                     <tbody className="divide-y divide-slate-50">
                       {reportData.cars.map(car => (
-                        <tr key={car._id} className="hover:bg-slate-50/50 transition-colors group">
+                        <tr key={car.id} className="hover:bg-slate-50/50 transition-colors group">
                           <td className="px-6 py-4 font-bold text-blue-600">{car.PlateNumber}</td>
                           <td className="px-6 py-4 text-slate-600 font-medium">{car.type}</td>
                           <td className="px-6 py-4 text-slate-900 font-semibold">{car.Model}</td>
@@ -851,7 +851,7 @@ export default function Reports() {
                     </thead>
                     <tbody className="divide-y divide-slate-50">
                       {reportData.services.map(service => (
-                        <tr key={service._id} className="hover:bg-slate-50/50 transition-colors">
+                        <tr key={service.id} className="hover:bg-slate-50/50 transition-colors">
                           <td className="px-6 py-4 font-mono font-bold text-amber-600">{service.ServiceCode}</td>
                           <td className="px-6 py-4 text-slate-900 font-bold">{service.ServiceName}</td>
                           <td className="px-6 py-4 text-right text-slate-900 font-bold">{formatPrice(service.ServicePrice)}</td>
@@ -892,7 +892,7 @@ export default function Reports() {
                       </thead>
                       <tbody className="divide-y divide-slate-50">
                         {reportData.payments.map(payment => (
-                          <tr key={payment._id} className="hover:bg-slate-50/50 transition-colors">
+                          <tr key={payment.id} className="hover:bg-slate-50/50 transition-colors">
                             <td className="px-6 py-4 font-bold text-indigo-600">{payment.PaymentNumber}</td>
                             <td className="px-6 py-4 text-slate-600">{new Date(payment.PaymentDate).toLocaleDateString()}</td>
                             <td className="px-6 py-4">
@@ -919,7 +919,7 @@ export default function Reports() {
                     </thead>
                     <tbody className="divide-y divide-slate-50">
                       {reportData.records.map(record => (
-                        <tr key={record._id} className="hover:bg-slate-50/50 transition-colors">
+                        <tr key={record.id} className="hover:bg-slate-50/50 transition-colors">
                           <td className="px-6 py-4 font-bold text-slate-900">{record.RecordNumber}</td>
                           <td className="px-6 py-4 text-slate-600 font-medium">{new Date(record.ServiceDate).toLocaleDateString()}</td>
                           <td className="px-6 py-4 text-slate-500 italic max-w-md truncate">{record.Notes || 'No technical observations recorded'}</td>

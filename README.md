@@ -55,4 +55,4 @@ The project is divided into two main parts:
 
 ## Authors
 
-- Mucyo Miguel
+- ntwari k. brian
