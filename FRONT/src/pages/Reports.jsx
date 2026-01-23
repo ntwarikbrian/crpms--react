@@ -69,7 +69,7 @@ export default function Reports() {
       setReportType(type);
     } catch (err) {
       console.error('Error generating report:', err);
-      setReportData({summary: null, cars: [], services: [], payments: [], records: []});
+      setReportData({ summary: null, cars: [], services: [], payments: [], records: [] });
     } finally {
       setLoading(false);
     }
@@ -677,223 +677,259 @@ export default function Reports() {
   };
 
   return (
-    <div className="page-container">
-      <LoadingSpinner isLoading={loading} message="Generating report..." />
-      
-      <div className="max-w-7xl mx-auto">
+    <div className="page-container bg-slate-50/50 min-h-screen">
+      <LoadingSpinner isLoading={loading} message="Generating Intelligence Report..." />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="page-title">📊 Reports & Analytics</h1>
-          <p className="text-gray-600 mt-2">Generate and print comprehensive reports</p>
+        <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
+              <span className="p-2 bg-blue-500/10 rounded-xl text-blue-600">📊</span>
+              Reports & Analytics
+            </h1>
+            <p className="text-slate-500 mt-2 font-medium">Generate, analyze, and export repair ecosystem data</p>
+          </div>
+
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <button
+              onClick={handlePrintReport}
+              className="flex-1 md:flex-none px-6 py-3 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-lg shadow-slate-200"
+            >
+              <span>🖨️</span> Print Master Report
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="flex-1 md:flex-none px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all shadow-sm"
+            >
+              <span>📄</span> Native PDF
+            </button>
+          </div>
         </div>
 
         {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
 
-        {/* Report Selection */}
-        <div className="card mb-8">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">📋 Select Report Type</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-            {[
-              { id: 'summary', label: '📊 Summary', icon: '📊' },
-              { id: 'cars', label: '🚗 Cars', icon: '🚗' },
-              { id: 'services', label: '🔧 Services', icon: '🔧' },
-              { id: 'payments', label: '💳 Payments', icon: '💳' },
-              { id: 'records', label: '📋 Records', icon: '📋' }
-            ].map(report => (
-              <button
-                key={report.id}
-                onClick={() => generateReport(report.id)}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  reportType === report.id
-                    ? 'border-primary bg-blue-50 text-primary'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-primary'
-                }`}
-              >
-                <div className="text-2xl mb-2">{report.icon}</div>
-                <div className="font-semibold text-sm">{report.label}</div>
-              </button>
-            ))}
+        {/* Intelligence Selection */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-[32px] p-8 shadow-sm border border-slate-200/60">
+              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                Intelligence Parameter
+              </h2>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {[
+                  { id: 'summary', label: 'Summary', icon: '📊', color: 'blue' },
+                  { id: 'cars', label: 'Fleet', icon: '🚗', color: 'emerald' },
+                  { id: 'services', label: 'Repairs', icon: '🔧', color: 'amber' },
+                  { id: 'payments', label: 'Finance', icon: '💳', color: 'indigo' },
+                  { id: 'records', label: 'History', icon: '📋', color: 'slate' }
+                ].map(report => (
+                  <button
+                    key={report.id}
+                    onClick={() => generateReport(report.id)}
+                    className={`group relative p-4 rounded-2xl border transition-all duration-300 ${reportType === report.id
+                        ? `border-${report.color}-500 bg-${report.color}-50 text-${report.color}-700 ring-4 ring-${report.color}-500/10`
+                        : 'border-slate-100 bg-slate-50/50 text-slate-600 hover:border-slate-300 hover:bg-white'
+                      }`}
+                  >
+                    <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">{report.icon}</div>
+                    <div className="font-bold text-xs uppercase tracking-tight">{report.label}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Car Filter */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">🚗 Filter by Car (Optional)</label>
-            <select
-              value={selectedCar}
-              onChange={(e) => setSelectedCar(e.target.value)}
-              className="form-input w-full"
-            >
-              <option value="">All Cars</option>
-              {cars.map(car => (
-                <option key={car.id} value={car.id}>
-                  {car.PlateNumber} - {car.Type} {car.Model}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="space-y-6">
+            <div className="bg-white rounded-[32px] p-8 shadow-sm border border-slate-200/60 h-full">
+              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
+                Fleet Filter
+              </h2>
 
-          {/* Print Button */}
-          <div className="flex gap-4">
-            <button
-              onClick={handlePrintReport}
-              className="flex-1 btn btn-primary flex items-center justify-center gap-2"
-            >
-              <span>🖨️</span>
-              <span>Print Report</span>
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="flex-1 btn btn-secondary flex items-center justify-center gap-2"
-            >
-              <span>📄</span>
-              <span>Export to PDF</span>
-            </button>
+              <div className="space-y-4">
+                <div className="input-box">
+                  <label className="form-label text-[10px] text-slate-400 mb-2">Target Vehicle</label>
+                  <select
+                    value={selectedCar}
+                    onChange={(e) => setSelectedCar(e.target.value)}
+                    className="form-input bg-slate-50 border-slate-200"
+                  >
+                    <option value="">Global Fleet (All Units)</option>
+                    {cars.map(car => (
+                      <option key={car._id} value={car._id}>
+                        {car.PlateNumber} • {car.Model}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed italic">
+                  Filtering updates the preview below but does not affect the global Master Export.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Report Preview */}
+        {/* Live Preview Area */}
         {reportData.summary && (
-          <div className="card">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">📈 Report Preview</h2>
-            
-            {reportType === 'summary' && reportData.summary && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                <div className="input-box text-center">
-                  <div className="text-3xl mb-2">🚗</div>
-                  <p className="text-gray-600 text-sm">Total Cars</p>
-                  <p className="text-2xl font-bold text-primary mt-2">{reportData.summary.totalCars}</p>
-                </div>
-                <div className="input-box text-center">
-                  <div className="text-3xl mb-2">🔧</div>
-                  <p className="text-gray-600 text-sm">Services</p>
-                  <p className="text-2xl font-bold text-primary mt-2">{reportData.summary.totalServices}</p>
-                </div>
-                <div className="input-box text-center">
-                  <div className="text-3xl mb-2">📋</div>
-                  <p className="text-gray-600 text-sm">Records</p>
-                  <p className="text-2xl font-bold text-primary mt-2">{reportData.summary.totalRecords}</p>
-                </div>
-                <div className="input-box text-center">
-                  <div className="text-3xl mb-2">💳</div>
-                  <p className="text-gray-600 text-sm">Payments</p>
-                  <p className="text-2xl font-bold text-primary mt-2">{reportData.summary.totalPayments}</p>
-                </div>
-                <div className="input-box text-center">
-                  <div className="text-3xl mb-2">💰</div>
-                  <p className="text-gray-600 text-sm">Revenue</p>
-                  <p className="text-lg font-bold text-secondary mt-2">{formatPrice(reportData.summary.totalRevenue)}</p>
-                </div>
-              </div>
-            )}
+          <div className="space-y-8 animate-slideUp">
+            <div className="flex items-center gap-4 px-2">
+              <div className="h-px flex-1 bg-slate-200"></div>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Intelligence Preview</span>
+              <div className="h-px flex-1 bg-slate-200"></div>
+            </div>
 
-            {reportType === 'cars' && reportData.cars.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gray-100 border-b">
-                      <th className="px-4 py-3 text-left font-semibold">Plate</th>
-                      <th className="px-4 py-3 text-left font-semibold">Type</th>
-                      <th className="px-4 py-3 text-left font-semibold">Model</th>
-                      <th className="px-4 py-3 text-left font-semibold">Year</th>
-                      <th className="px-4 py-3 text-left font-semibold">Driver</th>
-                      <th className="px-4 py-3 text-left font-semibold">Mechanic</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {reportData.cars.map(car => (
-                      <tr key={car._id} className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-3">{car.PlateNumber}</td>
-                        <td className="px-4 py-3">{car.type}</td>
-                        <td className="px-4 py-3">{car.Model}</td>
-                        <td className="px-4 py-3">{car.ManufacturingYear}</td>
-                        <td className="px-4 py-3">{car.DriverPhone}</td>
-                        <td className="px-4 py-3">{car.MechanicName}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {reportType === 'services' && reportData.services.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gray-100 border-b">
-                      <th className="px-4 py-3 text-left font-semibold">Code</th>
-                      <th className="px-4 py-3 text-left font-semibold">Name</th>
-                      <th className="px-4 py-3 text-right font-semibold">Price (RWF)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {reportData.services.map(service => (
-                      <tr key={service._id} className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-3">{service.ServiceCode}</td>
-                        <td className="px-4 py-3">{service.ServiceName}</td>
-                        <td className="px-4 py-3 text-right">{formatPrice(service.ServicePrice)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {reportType === 'payments' && reportData.payments.length > 0 && (
-              <div>
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg mb-6 border-l-4 border-blue-600">
-                  <p className="text-gray-600 text-sm uppercase tracking-wide">Total Revenue</p>
-                  <p className="text-3xl font-bold text-blue-600 mt-2">
-                    {formatPrice(reportData.payments.reduce((sum, p) => sum + (p.AmountPaid || 0), 0))}
-                  </p>
+            <div className="bg-white rounded-[40px] p-8 lg:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.03)] border border-white">
+              {reportType === 'summary' && reportData.summary && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="p-6 bg-blue-50/50 rounded-3xl border border-blue-100 group hover:bg-blue-50 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-xl mb-4">🚗</div>
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Fleet Assets</p>
+                    <p className="text-3xl font-bold text-slate-900">{reportData.summary.totalCars}</p>
+                  </div>
+                  <div className="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100 group hover:bg-emerald-50 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-xl mb-4">🔧</div>
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Repair Matrix</p>
+                    <p className="text-3xl font-bold text-slate-900">{reportData.summary.totalServices}</p>
+                  </div>
+                  <div className="p-6 bg-amber-50/50 rounded-3xl border border-amber-100 group hover:bg-amber-50 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-xl mb-4">📋</div>
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">History Logs</p>
+                    <p className="text-3xl font-bold text-slate-900">{reportData.summary.totalRecords}</p>
+                  </div>
+                  <div className="p-6 bg-indigo-50/50 rounded-3xl border border-indigo-100 group hover:bg-indigo-50 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-xl mb-4">💰</div>
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Gross Yield</p>
+                    <p className="text-xl font-bold text-slate-900">{formatPrice(reportData.summary.totalRevenue)}</p>
+                  </div>
                 </div>
-                <div className="overflow-x-auto">
+              )}
+
+              {reportType === 'cars' && reportData.cars.length > 0 && (
+                <div className="overflow-hidden rounded-3xl border border-slate-100">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="bg-gray-100 border-b">
-                        <th className="px-4 py-3 text-left font-semibold">Payment #</th>
-                        <th className="px-4 py-3 text-left font-semibold">Date</th>
-                        <th className="px-4 py-3 text-left font-semibold">Method</th>
-                        <th className="px-4 py-3 text-right font-semibold">Amount (RWF)</th>
+                      <tr className="bg-slate-50/80 border-b border-slate-100">
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Plate</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Type</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Model</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Year</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Driver Contact</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Mechanic</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {reportData.payments.map(payment => (
-                        <tr key={payment._id} className="border-b hover:bg-gray-50">
-                          <td className="px-4 py-3">{payment.PaymentNumber}</td>
-                          <td className="px-4 py-3">{new Date(payment.PaymentDate).toLocaleDateString()}</td>
-                          <td className="px-4 py-3">{payment.PaymentMethod}</td>
-                          <td className="px-4 py-3 text-right">{formatPrice(payment.AmountPaid)}</td>
+                    <tbody className="divide-y divide-slate-50">
+                      {reportData.cars.map(car => (
+                        <tr key={car._id} className="hover:bg-slate-50/50 transition-colors group">
+                          <td className="px-6 py-4 font-bold text-blue-600">{car.PlateNumber}</td>
+                          <td className="px-6 py-4 text-slate-600 font-medium">{car.type}</td>
+                          <td className="px-6 py-4 text-slate-900 font-semibold">{car.Model}</td>
+                          <td className="px-6 py-4 text-slate-500">{car.ManufacturingYear}</td>
+                          <td className="px-6 py-4 text-slate-600 font-mono">{car.DriverPhone}</td>
+                          <td className="px-6 py-4">
+                            <span className="px-3 py-1 bg-slate-100 rounded-full text-[11px] font-bold text-slate-600">{car.MechanicName}</span>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-              </div>
-            )}
+              )}
 
-            {reportType === 'records' && reportData.records.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gray-100 border-b">
-                      <th className="px-4 py-3 text-left font-semibold">Record #</th>
-                      <th className="px-4 py-3 text-left font-semibold">Service Date</th>
-                      <th className="px-4 py-3 text-left font-semibold">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {reportData.records.map(record => (
-                      <tr key={record._id} className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-3">{record.RecordNumber}</td>
-                        <td className="px-4 py-3">{new Date(record.ServiceDate).toLocaleDateString()}</td>
-                        <td className="px-4 py-3">{record.Notes || 'N/A'}</td>
+              {reportType === 'services' && reportData.services.length > 0 && (
+                <div className="overflow-hidden rounded-3xl border border-slate-100">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-100">
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Code</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Service Portfolio</th>
+                        <th className="px-6 py-4 text-right font-bold text-slate-600 uppercase tracking-widest text-[10px]">Standard Fee</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {reportData.services.map(service => (
+                        <tr key={service._id} className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-6 py-4 font-mono font-bold text-amber-600">{service.ServiceCode}</td>
+                          <td className="px-6 py-4 text-slate-900 font-bold">{service.ServiceName}</td>
+                          <td className="px-6 py-4 text-right text-slate-900 font-bold">{formatPrice(service.ServicePrice)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {reportType === 'payments' && reportData.payments.length > 0 && (
+                <div className="space-y-10">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-10 rounded-[32px] bg-slate-900 text-white relative overflow-hidden shadow-2xl">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -mt-20 -mr-20"></div>
+                    <div className="relative z-10">
+                      <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                        Consolidated Revenue
+                      </p>
+                      <p className="text-4xl font-bold">
+                        {formatPrice(reportData.payments.reduce((sum, p) => sum + (p.AmountPaid || 0), 0))}
+                      </p>
+                    </div>
+                    <div className="mt-6 sm:mt-0 relative z-10 p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 text-right">
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Transaction Count</p>
+                      <p className="text-2xl font-bold">{reportData.payments.length} Units</p>
+                    </div>
+                  </div>
+                  <div className="overflow-hidden rounded-3xl border border-slate-100">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-slate-50/80 border-b border-slate-100">
+                          <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Payment ID</th>
+                          <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Settled On</th>
+                          <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Channel</th>
+                          <th className="px-6 py-4 text-right font-bold text-slate-600 uppercase tracking-widest text-[10px]">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-50">
+                        {reportData.payments.map(payment => (
+                          <tr key={payment._id} className="hover:bg-slate-50/50 transition-colors">
+                            <td className="px-6 py-4 font-bold text-indigo-600">{payment.PaymentNumber}</td>
+                            <td className="px-6 py-4 text-slate-600">{new Date(payment.PaymentDate).toLocaleDateString()}</td>
+                            <td className="px-6 py-4">
+                              <span className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">{payment.PaymentMethod}</span>
+                            </td>
+                            <td className="px-6 py-4 text-right font-bold text-slate-900">{formatPrice(payment.AmountPaid)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {reportType === 'records' && reportData.records.length > 0 && (
+                <div className="overflow-hidden rounded-3xl border border-slate-100">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-100">
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Log ID</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Operation Date</th>
+                        <th className="px-6 py-4 text-left font-bold text-slate-600 uppercase tracking-widest text-[10px]">Findings / Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {reportData.records.map(record => (
+                        <tr key={record._id} className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-6 py-4 font-bold text-slate-900">{record.RecordNumber}</td>
+                          <td className="px-6 py-4 text-slate-600 font-medium">{new Date(record.ServiceDate).toLocaleDateString()}</td>
+                          <td className="px-6 py-4 text-slate-500 italic max-w-md truncate">{record.Notes || 'No technical observations recorded'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
