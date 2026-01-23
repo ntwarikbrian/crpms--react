@@ -106,46 +106,61 @@ export default function Services() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-            <div className="space-y-4">
-              <div className="input-box">
-                <label className="form-label text-sm">Service Code</label>
-                <input
-                  type="text"
-                  name="ServiceCode"
-                  value={formData.ServiceCode}
-                  onChange={handleChange}
-                  placeholder="e.g. SR007"
-                  className="form-input"
-                  required
-                />
+            <div className="space-y-6">
+              {/* Group 1: Service Identity */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Service Identity
+                </h4>
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Service Code</label>
+                    <input
+                      type="text"
+                      name="ServiceCode"
+                      value={formData.ServiceCode}
+                      onChange={handleChange}
+                      placeholder="e.g. SR007"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Service Name</label>
+                    <input
+                      type="text"
+                      name="ServiceName"
+                      value={formData.ServiceName}
+                      onChange={handleChange}
+                      placeholder="e.g. Engine Overhaul"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="input-box">
-                <label className="form-label text-sm">Service Name</label>
-                <input
-                  type="text"
-                  name="ServiceName"
-                  value={formData.ServiceName}
-                  onChange={handleChange}
-                  placeholder="e.g. Engine Repair"
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Price (RWF)</label>
-                <input
-                  type="number"
-                  name="ServicePrice"
-                  value={formData.ServicePrice}
-                  onChange={handleChange}
-                  placeholder="1000"
-                  className="form-input"
-                  required
-                  step="1000"
-                  min="0"
-                />
+              {/* Group 2: Pricing */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Pricing Information
+                </h4>
+                <div className="input-box">
+                  <label className="form-label text-sm text-slate-600">Price (RWF)</label>
+                  <input
+                    type="number"
+                    name="ServicePrice"
+                    value={formData.ServicePrice}
+                    onChange={handleChange}
+                    placeholder="1000"
+                    className="form-input font-bold text-blue-600"
+                    required
+                    step="1000"
+                    min="0"
+                  />
+                </div>
               </div>
             </div>
 

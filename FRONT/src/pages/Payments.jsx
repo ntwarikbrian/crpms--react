@@ -176,98 +176,119 @@ export default function Payments() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-            <div className="space-y-4">
-              <div className="input-box">
-                <label className="form-label text-sm">Car</label>
-                <select
-                  name="CarId"
-                  value={formData.CarId}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                >
-                  <option value="">Choose car...</option>
-                  {cars.map(car => (
-                    <option key={car.id} value={car.id}>
-                      {car.PlateNumber} - {car.Type} {car.Model}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="space-y-6">
+              {/* Group 1: Record Association */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Record Association
+                </h4>
+                <div className="space-y-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Selecting Vehicle</label>
+                    <select
+                      name="CarId"
+                      value={formData.CarId}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    >
+                      <option value="">Choose car...</option>
+                      {cars.map(car => (
+                        <option key={car._id} value={car._id}>
+                          {car.PlateNumber} - {car.Type} {car.Model}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div className="input-box">
-                <label className="form-label text-sm">Service Record</label>
-                <select
-                  value={formData.ServiceRecordId}
-                  onChange={handleRecordChange}
-                  className="form-input"
-                  required
-                >
-                  <option value="">Select record...</option>
-                  {records.map(record => (
-                    <option key={record._id} value={record._id}>
-                      {record.RecordNumber} - {getCarName(record.CarId)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="input-box">
-                  <label className="form-label text-sm">Payment No.</label>
-                  <input
-                    type="text"
-                    name="PaymentNumber"
-                    value={formData.PaymentNumber}
-                    onChange={handleChange}
-                    placeholder="PAY001"
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                <div className="input-box">
-                  <label className="form-label text-sm">Date</label>
-                  <input
-                    type="date"
-                    name="PaymentDate"
-                    value={formData.PaymentDate}
-                    onChange={handleChange}
-                    className="form-input"
-                    required
-                  />
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Linking Service Record</label>
+                    <select
+                      value={formData.ServiceRecordId}
+                      onChange={handleRecordChange}
+                      className="form-input"
+                      required
+                    >
+                      <option value="">Select record...</option>
+                      {records.map(record => (
+                        <option key={record._id} value={record._id}>
+                          {record.RecordNumber} - {getCarName(record.CarId)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="input-box">
-                  <label className="form-label text-sm">Amount (RWF)</label>
-                  <input
-                    type="number"
-                    name="AmountPaid"
-                    value={formData.AmountPaid}
-                    onChange={handleChange}
-                    placeholder="1000"
-                    className="form-input"
-                    required
-                    step="1000"
-                    min="0"
-                  />
+              {/* Group 2: Transaction Details */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Transaction Details
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Payment Number</label>
+                    <input
+                      type="text"
+                      name="PaymentNumber"
+                      value={formData.PaymentNumber}
+                      onChange={handleChange}
+                      placeholder="e.g. PAY-101"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Transaction Date</label>
+                    <input
+                      type="date"
+                      name="PaymentDate"
+                      value={formData.PaymentDate}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    />
+                  </div>
                 </div>
+              </div>
 
-                <div className="input-box">
-                  <label className="form-label text-sm">Method</label>
-                  <select
-                    name="PaymentMethod"
-                    value={formData.PaymentMethod}
-                    onChange={handleChange}
-                    className="form-input"
-                  >
-                    <option value="Cash">Cash</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                    <option value="Mobile Money">Mobile Money</option>
-                    <option value="Check">Check</option>
-                  </select>
+              {/* Group 3: Amount & Settlement */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Amount & Settlement
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Amount (RWF)</label>
+                    <input
+                      type="number"
+                      name="AmountPaid"
+                      value={formData.AmountPaid}
+                      onChange={handleChange}
+                      placeholder="1000"
+                      className="form-input font-bold text-green-600"
+                      required
+                      step="1000"
+                      min="0"
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Payment Channel</label>
+                    <select
+                      name="PaymentMethod"
+                      value={formData.PaymentMethod}
+                      onChange={handleChange}
+                      className="form-input"
+                    >
+                      <option value="Cash">Local Cash</option>
+                      <option value="Bank Transfer">Direct Bank</option>
+                      <option value="Mobile Money">MoMo Pay</option>
+                      <option value="Check">Business Check</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>

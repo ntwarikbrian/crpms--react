@@ -176,78 +176,101 @@ export default function ServiceRecords() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-            <div className="space-y-4">
-              <div className="input-box">
-                <label className="form-label text-sm">Record No.</label>
-                <input
-                  type="text"
-                  name="RecordNumber"
-                  value={formData.RecordNumber}
-                  onChange={handleChange}
-                  placeholder="e.g. REC001"
-                  className="form-input"
-                  required
-                />
+            <div className="space-y-6">
+              {/* Group 1: General Info */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  General Info
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Record No.</label>
+                    <input
+                      type="text"
+                      name="RecordNumber"
+                      value={formData.RecordNumber}
+                      onChange={handleChange}
+                      placeholder="e.g. REC-101"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Service Date</label>
+                    <input
+                      type="date"
+                      name="ServiceDate"
+                      value={formData.ServiceDate}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="input-box">
-                <label className="form-label text-sm">Date</label>
-                <input
-                  type="date"
-                  name="ServiceDate"
-                  value={formData.ServiceDate}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
+              {/* Group 2: Assignment */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Assignment
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Vehicle</label>
+                    <select
+                      name="CarId"
+                      value={formData.CarId}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    >
+                      <option value="">Choose car...</option>
+                      {cars.map(car => (
+                        <option key={car._id} value={car._id}>
+                          {car.PlateNumber} - {car.Model}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Service Type</label>
+                    <select
+                      name="ServiceId"
+                      value={formData.ServiceId}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    >
+                      <option value="">Choose service...</option>
+                      {services.map(service => (
+                        <option key={service._id} value={service._id}>
+                          {service.ServiceName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              <div className="input-box">
-                <label className="form-label text-sm">Car</label>
-                <select
-                  name="CarId"
-                  value={formData.CarId}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                >
-                  <option value="">Choose car...</option>
-                  {cars.map(car => (
-                    <option key={car._id} value={car._id}>
-                      {car.PlateNumber} - {car.Model}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Service</label>
-                <select
-                  name="ServiceId"
-                  value={formData.ServiceId}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                >
-                  <option value="">Choose service...</option>
-                  {services.map(service => (
-                    <option key={service._id} value={service._id}>
-                      {service.ServiceName} - RWF {service.ServicePrice.toLocaleString()}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Notes</label>
-                <textarea
-                  name="Notes"
-                  value={formData.Notes}
-                  onChange={handleChange}
-                  placeholder="Notes..."
-                  rows="3"
-                  className="form-input resize-none"
-                />
+              {/* Group 3: Observations */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Observations & Notes
+                </h4>
+                <div className="input-box">
+                  <label className="form-label text-sm text-slate-600">Notes / Details</label>
+                  <textarea
+                    name="Notes"
+                    value={formData.Notes}
+                    onChange={handleChange}
+                    placeholder="Describe findings or work done..."
+                    rows="3"
+                    className="form-input resize-none"
+                  />
+                </div>
               </div>
             </div>
 

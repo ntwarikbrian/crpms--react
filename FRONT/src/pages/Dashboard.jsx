@@ -107,59 +107,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Main Highlights Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Revenue Card */}
-        <div className="lg:col-span-2 bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -mt-20 -mr-20"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl -mb-20 -ml-20"></div>
-
-          <div className="relative z-10 h-full flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-widest mb-4">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
-                Financial Performance
-              </div>
-              <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {formatPrice(stats.totalRevenue)}
-              </h3>
-              <p className="text-slate-400 text-sm font-medium">
-                Consolidated revenue from {stats.totalPayments} verified transactions
-              </p>
-            </div>
-
-            <div className="mt-8 flex gap-4">
-              <Link to="/dashboard/payments" className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-blue-50 transition-all">
-                Financial Details
-              </Link>
-              <Link to="/dashboard/reports" className="px-6 py-3 bg-slate-800 text-white rounded-xl font-bold text-sm hover:bg-slate-700 transition-all">
-                Export Report
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Info Box */}
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 mb-4 tracking-tight">Activity Status</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <span className="text-sm font-semibold text-slate-600">Pending Approvals</span>
-                <span className="px-2 py-1 bg-amber-100 text-amber-600 text-[10px] font-bold rounded-full">Coming Soon</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <span className="text-sm font-semibold text-slate-600">Active Records</span>
-                <span className="text-sm font-bold text-slate-900">{stats.totalRecords}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-slate-100 italic text-[11px] text-slate-400 font-medium">
-            System status: <span className="text-emerald-500 font-bold">Operational</span> • Last updated: {new Date().toLocaleTimeString()}
-          </div>
-        </div>
-      </div>
+      {/* Recent Activity or other sections can go here if needed in the future */}
     </div>
   );
 }

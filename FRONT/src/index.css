@@ -434,39 +434,59 @@ code {
   z-index: 1;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #0f766e;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* ==================== INPUT BOXES ==================== */
+.input-box {
+  background: white;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.form-group:focus-within .form-label {
-  color: var(--primary-light);
-  transform: translateY(-2px);
+.input-box:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-box:focus-within {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: #64748b;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
   width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--gray-border);
-  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1.5px solid #f1f5f9;
+  border-radius: 10px;
   font-size: 14px;
   font-family: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  background: #f8fafc;
+  color: #1e293b;
+  font-weight: 500;
 }
 
 .form-input:hover,
 .form-select:hover,
 .form-textarea:hover {
-  border-color: rgba(15, 118, 110, 0.3);
+  background: #f1f5f9;
+  border-color: #e2e8f0;
 }
 
 .form-input:focus,
@@ -474,67 +494,9 @@ code {
 .form-textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1);
-  transform: translateY(-2px);
   background: white;
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-input::placeholder {
-  color: #cbd5e1;
-}
-
-.form-error {
-  color: var(--danger);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-/* ==================== INPUT BOXES ==================== */
-.input-box {
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.02) 0%, rgba(20, 184, 166, 0.02) 100%);
-  padding: 16px;
-  border-radius: 10px;
-  border: 1.5px solid rgba(203, 213, 225, 0.6);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.input-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.1) 50%,
-      transparent 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.input-box:hover {
-  border-color: rgba(15, 118, 110, 0.4);
-  box-shadow: 0 4px 8px rgba(15, 118, 110, 0.05);
-}
-
-.input-box:focus-within {
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
   transform: translateY(-1px);
-}
-
-.input-box:focus-within::before {
-  opacity: 1;
 }
 
 /* ==================== CARDS ==================== */

@@ -113,83 +113,97 @@ export default function Cars() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="input-box">
-                <label className="form-label text-sm">Plate No.</label>
-                <input
-                  type="text"
-                  name="PlateNumber"
-                  value={formData.PlateNumber}
-                  onChange={handleChange}
-                  placeholder="e.g. RAL123A"
-                  className="form-input"
-                  required
-                />
+            <div className="space-y-6">
+              {/* Group 1: Vehicle Information */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Vehicle Information
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Plate Number</label>
+                    <input
+                      type="text"
+                      name="PlateNumber"
+                      value={formData.PlateNumber}
+                      onChange={handleChange}
+                      placeholder="e.g. RAL123A"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Vehicle Type</label>
+                    <input
+                      type="text"
+                      name="Type"
+                      value={formData.Type}
+                      onChange={handleChange}
+                      placeholder="e.g. Sedan, SUV"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box sm:col-span-2">
+                    <label className="form-label text-sm text-slate-600">Model Name</label>
+                    <input
+                      type="text"
+                      name="Model"
+                      value={formData.Model}
+                      onChange={handleChange}
+                      placeholder="e.g. Toyota Camry"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="input-box">
-                <label className="form-label text-sm">Type</label>
-                <input
-                  type="text"
-                  name="Type"
-                  value={formData.Type}
-                  onChange={handleChange}
-                  placeholder="e.g. Sedan, SUV"
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Model</label>
-                <input
-                  type="text"
-                  name="Model"
-                  value={formData.Model}
-                  onChange={handleChange}
-                  placeholder="e.g. Camry"
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Year</label>
-                <input
-                  type="number"
-                  name="ManufacturingYear"
-                  value={formData.ManufacturingYear}
-                  onChange={handleChange}
-                  placeholder="2024"
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Driver Phone</label>
-                <input
-                  type="tel"
-                  name="DriverPhone"
-                  value={formData.DriverPhone}
-                  onChange={handleChange}
-                  placeholder="+250..."
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="input-box">
-                <label className="form-label text-sm">Mechanic</label>
-                <input
-                  type="text"
-                  name="MechanicName"
-                  value={formData.MechanicName}
-                  onChange={handleChange}
-                  placeholder="Mechanic name"
-                  className="form-input"
-                  required
-                />
+              {/* Group 2: Management & Assignment */}
+              <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100 space-y-4">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-4 h-px bg-slate-200"></span>
+                  Management & Assignment
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Manufacturing Year</label>
+                    <input
+                      type="number"
+                      name="ManufacturingYear"
+                      value={formData.ManufacturingYear}
+                      onChange={handleChange}
+                      placeholder="2024"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box">
+                    <label className="form-label text-sm text-slate-600">Driver Phone</label>
+                    <input
+                      type="tel"
+                      name="DriverPhone"
+                      value={formData.DriverPhone}
+                      onChange={handleChange}
+                      placeholder="+250..."
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                  <div className="input-box sm:col-span-2">
+                    <label className="form-label text-sm text-slate-600">Assigned Mechanic</label>
+                    <input
+                      type="text"
+                      name="MechanicName"
+                      value={formData.MechanicName}
+                      onChange={handleChange}
+                      placeholder="Mechanic name"
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
