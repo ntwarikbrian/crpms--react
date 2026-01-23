@@ -149,12 +149,12 @@ export default function ServiceRecords() {
   };
 
   const getCarName = (carId) => {
-    const car = cars.find(c => c._id === carId || c.id === carId);
+    const car = cars.find(c => c.id === carId);
     return car ? `${car.PlateNumber} - ${car.Model}` : 'Unknown Vehicle';
   };
 
   const getServiceName = (serviceId) => {
-    const service = services.find(s => s._id === serviceId || s.id === serviceId);
+    const service = services.find(s => s.id === serviceId);
     return service ? service.ServiceName : 'Unknown Service';
   };
 
@@ -366,7 +366,7 @@ export default function ServiceRecords() {
                 >
                   <option value="">Select a vehicle...</option>
                   {cars.map(car => (
-                    <option key={car.id || car._id} value={car.id || car._id}>
+                    <option key={car.id} value={car.id}>
                       {car.PlateNumber} - {car.Model}
                     </option>
                   ))}
@@ -383,7 +383,7 @@ export default function ServiceRecords() {
                 >
                   <option value="">Select service type...</option>
                   {services.map(service => (
-                    <option key={service.id || service._id} value={service.id || service._id}>
+                    <option key={service.id} value={service.id}>
                       {service.ServiceName}
                     </option>
                   ))}
