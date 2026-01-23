@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { carsAPI } from '../api/endpoints';
 import AlertBox from '../components/AlertBox';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Modal from '../components/Modal';
 
 export default function Cars() {
   const [cars, setCars] = useState([]);
@@ -86,7 +87,7 @@ export default function Cars() {
   return (
     <div className="page-container">
       <LoadingSpinner isLoading={loading} message="Processing..." />
-      
+
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -104,118 +105,111 @@ export default function Cars() {
 
         {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
 
-        {/* Add Car Form */}
-        {showForm && (
-          <div className="card mb-8 animate-slideDown">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900">🚗 Add New Car</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
-              {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
+        <Modal
+          isOpen={showForm}
+          onClose={() => setShowForm(false)}
+          title="🚗 Add New Car"
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                {/* Plate Number */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Plate No.</label>
-                  <input
-                    type="text"
-                    name="PlateNumber"
-                    value={formData.PlateNumber}
-                    onChange={handleChange}
-                    placeholder="RAL123A"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Type */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Type</label>
-                  <input
-                    type="text"
-                    name="Type"
-                    value={formData.Type}
-                    onChange={handleChange}
-                    placeholder="Sedan, SUV"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Model */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Model</label>
-                  <input
-                    type="text"
-                    name="Model"
-                    value={formData.Model}
-                    onChange={handleChange}
-                    placeholder="Camry"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Manufacturing Year */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Year</label>
-                  <input
-                    type="number"
-                    name="ManufacturingYear"
-                    value={formData.ManufacturingYear}
-                    onChange={handleChange}
-                    placeholder="2024"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Driver Phone */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Driver Phone</label>
-                  <input
-                    type="tel"
-                    name="DriverPhone"
-                    value={formData.DriverPhone}
-                    onChange={handleChange}
-                    placeholder="+250781234567"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Mechanic Name */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Mechanic</label>
-                  <input
-                    type="text"
-                    name="MechanicName"
-                    value={formData.MechanicName}
-                    onChange={handleChange}
-                    placeholder="Mechanic name"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="input-box">
+                <label className="form-label text-sm">Plate No.</label>
+                <input
+                  type="text"
+                  name="PlateNumber"
+                  value={formData.PlateNumber}
+                  onChange={handleChange}
+                  placeholder="e.g. RAL123A"
+                  className="form-input"
+                  required
+                />
               </div>
 
-              <div className="flex gap-3 mt-8 pt-6 border-t">
-                <button
-                  type="submit"
-                  className="btn btn-secondary flex-1"
-                >
-                  ✅ Add Car
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="btn btn-outline flex-1"
-                >
-                  ❌ Cancel
-                </button>
+              <div className="input-box">
+                <label className="form-label text-sm">Type</label>
+                <input
+                  type="text"
+                  name="Type"
+                  value={formData.Type}
+                  onChange={handleChange}
+                  placeholder="e.g. Sedan, SUV"
+                  className="form-input"
+                  required
+                />
               </div>
-            </form>
-          </div>
-        )}
+
+              <div className="input-box">
+                <label className="form-label text-sm">Model</label>
+                <input
+                  type="text"
+                  name="Model"
+                  value={formData.Model}
+                  onChange={handleChange}
+                  placeholder="e.g. Camry"
+                  className="form-input"
+                  required
+                />
+              </div>
+
+              <div className="input-box">
+                <label className="form-label text-sm">Year</label>
+                <input
+                  type="number"
+                  name="ManufacturingYear"
+                  value={formData.ManufacturingYear}
+                  onChange={handleChange}
+                  placeholder="2024"
+                  className="form-input"
+                  required
+                />
+              </div>
+
+              <div className="input-box">
+                <label className="form-label text-sm">Driver Phone</label>
+                <input
+                  type="tel"
+                  name="DriverPhone"
+                  value={formData.DriverPhone}
+                  onChange={handleChange}
+                  placeholder="+250..."
+                  className="form-input"
+                  required
+                />
+              </div>
+
+              <div className="input-box">
+                <label className="form-label text-sm">Mechanic</label>
+                <input
+                  type="text"
+                  name="MechanicName"
+                  value={formData.MechanicName}
+                  onChange={handleChange}
+                  placeholder="Mechanic name"
+                  className="form-input"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="btn btn-outline flex-1"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary flex-1"
+              >
+                ✅ Add Car
+              </button>
+            </div>
+          </form>
+        </Modal>
 
         {/* Cars Table */}
         <div className="card">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { paymentsAPI, serviceRecordsAPI, carsAPI } from '../api/endpoints';
 import AlertBox from '../components/AlertBox';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Modal from '../components/Modal';
 
 export default function Payments() {
   const [payments, setPayments] = useState([]);
@@ -131,7 +132,7 @@ export default function Payments() {
   return (
     <div className="page-container">
       <LoadingSpinner isLoading={loading} message="Processing..." />
-      
+
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -167,35 +168,51 @@ export default function Payments() {
           </div>
         </div>
 
-        {/* Form */}
-        {showForm && (
-          <div className="card mb-8 animate-slideDown">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900">💳 Record New Payment</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
-              {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
+        <Modal
+          isOpen={showForm}
+          onClose={() => setShowForm(false)}
+          title="💳 Record New Payment"
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {/* Select Car */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Car</label>
-                  <select
-                    name="CarId"
-                    value={formData.CarId}
-                    onChange={handleChange}
-                    className="form-input h-8 text-sm"
-                    required
-                  >
-                    <option value="">Choose car...</option>
-                    {cars.map(car => (
-                      <option key={car.id} value={car.id}>
-                        {car.PlateNumber} - {car.Type} {car.Model}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <div className="space-y-4">
+              <div className="input-box">
+                <label className="form-label text-sm">Car</label>
+                <select
+                  name="CarId"
+                  value={formData.CarId}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                >
+                  <option value="">Choose car...</option>
+                  {cars.map(car => (
+                    <option key={car.id} value={car.id}>
+                      {car.PlateNumber} - {car.Type} {car.Model}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                {/* Payment Number */}
+              <div className="input-box">
+                <label className="form-label text-sm">Service Record</label>
+                <select
+                  value={formData.ServiceRecordId}
+                  onChange={handleRecordChange}
+                  className="form-input"
+                  required
+                >
+                  <option value="">Select record...</option>
+                  {records.map(record => (
+                    <option key={record._id} value={record._id}>
+                      {record.RecordNumber} - {getCarName(record.CarId)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
                 <div className="input-box">
                   <label className="form-label text-sm">Payment No.</label>
                   <input
@@ -204,12 +221,11 @@ export default function Payments() {
                     value={formData.PaymentNumber}
                     onChange={handleChange}
                     placeholder="PAY001"
-                    className="form-input h-8 text-sm"
+                    className="form-input"
                     required
                   />
                 </div>
 
-                {/* Payment Date */}
                 <div className="input-box">
                   <label className="form-label text-sm">Date</label>
                   <input
@@ -217,30 +233,13 @@ export default function Payments() {
                     name="PaymentDate"
                     value={formData.PaymentDate}
                     onChange={handleChange}
-                    className="form-input h-8 text-sm"
+                    className="form-input"
                     required
                   />
                 </div>
+              </div>
 
-                {/* Service Record */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Service Record</label>
-                  <select
-                    value={formData.ServiceRecordId}
-                    onChange={handleRecordChange}
-                    className="form-input h-8 text-sm"
-                    required
-                  >
-                    <option value="">Select record...</option>
-                    {records.map(record => (
-                      <option key={record._id} value={record._id}>
-                        {record.RecordNumber} - {getCarName(record.CarId)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Amount Paid */}
+              <div className="grid grid-cols-2 gap-4">
                 <div className="input-box">
                   <label className="form-label text-sm">Amount (RWF)</label>
                   <input
@@ -249,21 +248,20 @@ export default function Payments() {
                     value={formData.AmountPaid}
                     onChange={handleChange}
                     placeholder="1000"
-                    className="form-input h-8 text-sm"
+                    className="form-input"
                     required
                     step="1000"
                     min="0"
                   />
                 </div>
 
-                {/* Payment Method */}
                 <div className="input-box">
                   <label className="form-label text-sm">Method</label>
                   <select
                     name="PaymentMethod"
                     value={formData.PaymentMethod}
                     onChange={handleChange}
-                    className="form-input h-8 text-sm"
+                    className="form-input"
                   >
                     <option value="Cash">Cash</option>
                     <option value="Bank Transfer">Bank Transfer</option>
@@ -272,25 +270,25 @@ export default function Payments() {
                   </select>
                 </div>
               </div>
+            </div>
 
-              <div className="flex gap-4 pt-2">
-                <button
-                  type="submit"
-                  className="flex-1 btn btn-primary"
-                >
-                  ✅ Record Payment
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="flex-1 btn btn-secondary"
-                >
-                  ✖️ Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
+            <div className="flex gap-3 mt-8 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="btn btn-outline flex-1"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary flex-1"
+              >
+                ✅ Record Payment
+              </button>
+            </div>
+          </form>
+        </Modal>
 
         {/* Payments Table */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">

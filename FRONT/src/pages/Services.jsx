@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { servicesAPI } from '../api/endpoints';
 import AlertBox from '../components/AlertBox';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Modal from '../components/Modal';
 
 export default function Services() {
   const [services, setServices] = useState([]);
@@ -79,7 +80,7 @@ export default function Services() {
   return (
     <div className="page-container">
       <LoadingSpinner isLoading={loading} message="Processing..." />
-      
+
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -97,74 +98,74 @@ export default function Services() {
 
         {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
 
-        {/* Add Service Form */}
-        {showForm && (
-          <div className="card mb-8 animate-slideDown">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900">🔧 Add New Service</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
+        <Modal
+          isOpen={showForm}
+          onClose={() => setShowForm(false)}
+          title="🔧 Add New Service"
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div className="input-box">
-                  <label className="form-label text-sm">Code</label>
-                  <input
-                    type="text"
-                    name="ServiceCode"
-                    value={formData.ServiceCode}
-                    onChange={handleChange}
-                    placeholder="SR007"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                <div className="input-box">
-                  <label className="form-label text-sm">Service Name</label>
-                  <input
-                    type="text"
-                    name="ServiceName"
-                    value={formData.ServiceName}
-                    onChange={handleChange}
-                    placeholder="Engine Repair"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                <div className="input-box">
-                  <label className="form-label text-sm">Price (RWF)</label>
-                  <input
-                    type="number"
-                    name="ServicePrice"
-                    value={formData.ServicePrice}
-                    onChange={handleChange}
-                    placeholder="1000"
-                    className="form-input h-8 text-sm"
-                    required
-                    step="1000"
-                    min="0"
-                  />
-                </div>
+            <div className="space-y-4">
+              <div className="input-box">
+                <label className="form-label text-sm">Service Code</label>
+                <input
+                  type="text"
+                  name="ServiceCode"
+                  value={formData.ServiceCode}
+                  onChange={handleChange}
+                  placeholder="e.g. SR007"
+                  className="form-input"
+                  required
+                />
               </div>
 
-              <div className="flex gap-3 mt-8 pt-6 border-t">
-                <button
-                  type="submit"
-                  className="btn btn-secondary flex-1"
-                >
-                  ✅ Add Service
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="btn btn-outline flex-1"
-                >
-                  ❌ Cancel
-                </button>
+              <div className="input-box">
+                <label className="form-label text-sm">Service Name</label>
+                <input
+                  type="text"
+                  name="ServiceName"
+                  value={formData.ServiceName}
+                  onChange={handleChange}
+                  placeholder="e.g. Engine Repair"
+                  className="form-input"
+                  required
+                />
               </div>
-            </form>
-          </div>
-        )}
+
+              <div className="input-box">
+                <label className="form-label text-sm">Price (RWF)</label>
+                <input
+                  type="number"
+                  name="ServicePrice"
+                  value={formData.ServicePrice}
+                  onChange={handleChange}
+                  placeholder="1000"
+                  className="form-input"
+                  required
+                  step="1000"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="btn btn-outline flex-1"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary flex-1"
+              >
+                ✅ Add Service
+              </button>
+            </div>
+          </form>
+        </Modal>
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { serviceRecordsAPI, carsAPI, servicesAPI } from '../api/endpoints';
 import AlertBox from '../components/AlertBox';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Modal from '../components/Modal';
 
 export default function ServiceRecords() {
   const [records, setRecords] = useState([]);
@@ -146,7 +147,7 @@ export default function ServiceRecords() {
   return (
     <div className="page-container">
       <LoadingSpinner isLoading={loading} message="Processing..." />
-      
+
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -167,113 +168,106 @@ export default function ServiceRecords() {
 
         {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
 
-        {/* Form */}
-        {showForm && (
-          <div className="card mb-8 animate-slideDown">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900">
-              {editingId ? '✏️ Edit Service Record' : '📋 Create New Service Record'}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
-              {success && <AlertBox message={success} type="success" onClose={() => setSuccess('')} />}
+        <Modal
+          isOpen={showForm}
+          onClose={handleCancel}
+          title={editingId ? '✏️ Edit Service Record' : '📋 Create New Service Record'}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <AlertBox message={error} type="error" onClose={() => setError('')} />}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {/* Record Number */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Record No.</label>
-                  <input
-                    type="text"
-                    name="RecordNumber"
-                    value={formData.RecordNumber}
-                    onChange={handleChange}
-                    placeholder="REC001"
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Service Date */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Date</label>
-                  <input
-                    type="date"
-                    name="ServiceDate"
-                    value={formData.ServiceDate}
-                    onChange={handleChange}
-                    className="form-input h-8 text-sm"
-                    required
-                  />
-                </div>
-
-                {/* Select Car */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Car</label>
-                  <select
-                    name="CarId"
-                    value={formData.CarId}
-                    onChange={handleChange}
-                    className="form-input h-8 text-sm"
-                    required
-                  >
-                    <option value="">Choose car...</option>
-                    {cars.map(car => (
-                      <option key={car._id} value={car._id}>
-                        {car.PlateNumber} - {car.Model}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Select Service */}
-                <div className="input-box">
-                  <label className="form-label text-sm\">Service</label>\n                  <select
-                    name="ServiceId"
-                    value={formData.ServiceId}
-                    onChange={handleChange}
-                    className="form-input h-8 text-sm"
-                    required
-                  >
-                    <option value="">Choose service...</option>
-                    {services.map(service => (
-                      <option key={service._id} value={service._id}>
-                        {service.ServiceName} - RWF {service.ServicePrice.toLocaleString()}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Notes */}
-                <div className="input-box">
-                  <label className="form-label text-sm">Notes</label>
-                  <textarea
-                    name="Notes"
-                    value={formData.Notes}
-                    onChange={handleChange}
-                    placeholder="Notes..."
-                    rows="1"
-                    className="form-input h-8 text-sm resize-none"
-                  />
-                </div>
+            <div className="space-y-4">
+              <div className="input-box">
+                <label className="form-label text-sm">Record No.</label>
+                <input
+                  type="text"
+                  name="RecordNumber"
+                  value={formData.RecordNumber}
+                  onChange={handleChange}
+                  placeholder="e.g. REC001"
+                  className="form-input"
+                  required
+                />
               </div>
 
-              <div className="flex gap-3 justify-end">
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="btn btn-secondary"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                >
-                  {editingId ? 'Update Record' : 'Create Record'}
-                </button>
+              <div className="input-box">
+                <label className="form-label text-sm">Date</label>
+                <input
+                  type="date"
+                  name="ServiceDate"
+                  value={formData.ServiceDate}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                />
               </div>
-            </form>
-          </div>
-        )}
+
+              <div className="input-box">
+                <label className="form-label text-sm">Car</label>
+                <select
+                  name="CarId"
+                  value={formData.CarId}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                >
+                  <option value="">Choose car...</option>
+                  {cars.map(car => (
+                    <option key={car._id} value={car._id}>
+                      {car.PlateNumber} - {car.Model}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="input-box">
+                <label className="form-label text-sm">Service</label>
+                <select
+                  name="ServiceId"
+                  value={formData.ServiceId}
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                >
+                  <option value="">Choose service...</option>
+                  {services.map(service => (
+                    <option key={service._id} value={service._id}>
+                      {service.ServiceName} - RWF {service.ServicePrice.toLocaleString()}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="input-box">
+                <label className="form-label text-sm">Notes</label>
+                <textarea
+                  name="Notes"
+                  value={formData.Notes}
+                  onChange={handleChange}
+                  placeholder="Notes..."
+                  rows="3"
+                  className="form-input resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="btn btn-outline flex-1"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary flex-1"
+              >
+                {editingId ? 'Update Record' : 'Create Record'}
+              </button>
+            </div>
+          </form>
+        </Modal>
 
         {/* Records Table */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -303,9 +297,8 @@ export default function ServiceRecords() {
                       <td className="px-4 py-3 text-sm text-gray-600">{getServiceName(record.ServiceId)}</td>
                       <td className="px-4 py-3 text-sm text-gray-600">{new Date(record.ServiceDate).toLocaleDateString()}</td>
                       <td className="px-4 py-3 text-sm">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
-                        }`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                          }`}>
                           {record.status}
                         </span>
                       </td>
